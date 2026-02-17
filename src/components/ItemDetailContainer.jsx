@@ -8,10 +8,11 @@ const ItemDetailContainer = () => {
   const [item, setItem] = useState(null);
 
   useEffect(() => {
-    getProductById(itemId).then(setItem);
+    getProductById(Number(itemId)).then(setItem); 
   }, [itemId]);
 
-  if (!item) return <p className="text-secondary container py-4">Cargando...</p>;
+  if (!item)
+    return <p className="text-secondary container py-4">Cargando...</p>;
 
   return (
     <section className="container py-4">

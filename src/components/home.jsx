@@ -6,11 +6,11 @@ const Home = () => {
         <div className="card-glass text-center">
 
           <h1 className="hero-title">
-            Bienvenido a Hubs
+            Bienvenido a NOVASHOP
           </h1>
 
           <p className="hero-subtitle">
-            Tu tienda de entornos de realidad virtual Descubre experiencias inmersivas para educación, empresas y eventos.
+            Tu tienda virtual.
           </p>
         </div>
 

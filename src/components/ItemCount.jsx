@@ -1,17 +1,27 @@
 import { useState } from "react";
 
-const ItemCount = () => {
+const ItemCount = ({ onAdd }) => {
   const [count, setCount] = useState(1);
 
-  return (
-    <div className="d-flex gap-2 align-items-center">
-      <button className="btn btn-outline-light" onClick={() => setCount(Math.max(1, count - 1))}>-</button>
-      <span className="text-white fw-bold">{count}</span>
-      <button className="btn btn-outline-light" onClick={() => setCount(count + 1)}>+</button>
+  const increment = () => {
+    setCount(count + 1); 
+  };
 
-      <button className="btn btn-warning ms-2" onClick={() => alert(`Agregado: ${count}`)}>
-        Agregar
-      </button>
+  const decrement = () => {
+    if (count > 1) setCount(count - 1);
+  };
+
+  return (
+    <div>
+      <button onClick={decrement}>−</button>
+      <span style={{ margin: "0 10px" }}>{count}</span>
+      <button onClick={increment}>+</button>
+
+      <div>
+        <button onClick={() => onAdd(count)}>
+          Agregar al carrito
+        </button>
+      </div>
     </div>
   );
 };

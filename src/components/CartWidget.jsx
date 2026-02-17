@@ -1,10 +1,14 @@
+import { useCart } from "../context/CartContext";
+import { Link } from "react-router-dom";
+
 const CartWidget = () => {
-    return (
-      <div className="d-flex align-items-center text-white">
-        <span className="fs-4 me-2">🛒</span>
-        <span className="badge rounded-pill bg-warning text-dark">0</span>
-      </div>
-    );
-  };
-  
-  export default CartWidget;
+  const { totalQuantity } = useCart();
+
+  return (
+    <Link to="/cart">
+      🛒 <span>{totalQuantity()}</span>
+    </Link>
+  );
+};
+
+export default CartWidget;
