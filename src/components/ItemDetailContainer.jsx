@@ -1,22 +1,48 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProductById } from "../data/products";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../service/firebase";
 import ItemDetail from "../components/ItemDetail";
 
 const ItemDetailContainer = () => {
   const { itemId } = useParams();
-  const [item, setItem] = useState(null);
+
+  const [detail, setDetail] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProductById(Number(itemId)).then(setItem); 
-  }, [itemId]);
+    setLoading(true);
 
-  if (!item)
-    return <p className="text-secondary container py-4">Cargando...</p>;
+    const docRef = doc(db, "productos", itemId);
+
+    getDoc(docRef)
+      .then((res) => {
+        if (res.exists()) {
+          const producto = {
+            id: res.id,
+            ...res.data(),
+          };
+
+          console.log("Detalle Firestore:", producto);
+          setDetail(producto);
+        } else {
+          console.log("No existe el producto");
+        }
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+
+  }, [itemId]);
 
   return (
     <section className="container py-4">
-      <ItemDetail item={item} />
+      {loading ? (
+        <p className="text-secondary">Cargando detalle...</p>
+      ) : detail ? (
+        <ItemDetail {...detail} />
+      ) : (
+        <p className="text-danger">Producto no encontrado</p>
+      )}
     </section>
   );
 };

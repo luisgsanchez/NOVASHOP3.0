@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProducts, getProductsByCategory } from "../data/products";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../service/firebase";
 import ItemList from "../components/ItemList";
 
 const ItemListContainer = () => {
@@ -11,19 +12,25 @@ const ItemListContainer = () => {
   useEffect(() => {
     setLoading(true);
 
-    if (categoryId) {
-      //  Si hay categoría → filtra
-      getProductsByCategory(categoryId).then((res) => {
-        setItems(res);
-        setLoading(false);
-      });
-    } else {
-      //  Si no hay categoría → todo
-      getProducts().then((res) => {
-        setItems(res);
-        setLoading(false);
-      });
-    }
+    const productsCollection = collection(db, "productos");
+
+    const consulta = categoryId
+      ? query(productsCollection, where("category", "==", categoryId))
+      : productsCollection;
+
+    getDocs(consulta)
+      .then((res) => {
+        const list = res.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        console.log("Productos:", list);
+        setItems(list);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+
   }, [categoryId]);
 
   return (

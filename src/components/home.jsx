@@ -10,7 +10,7 @@ const Home = () => {
           </h1>
 
           <p className="hero-subtitle">
-            Tu tienda virtual.
+            Donde tu equipo se convierte en estilo.
           </p>
         </div>
 
