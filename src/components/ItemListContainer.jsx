@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProducts } from "../data/products";
+import { getProducts, getProductsByCategory } from "../data/products";
 import ItemList from "../components/ItemList";
 
 const ItemListContainer = () => {
@@ -10,10 +10,20 @@ const ItemListContainer = () => {
 
   useEffect(() => {
     setLoading(true);
-    getProducts(categoryId).then((res) => {
-      setItems(res);
-      setLoading(false);
-    });
+
+    if (categoryId) {
+      //  Si hay categoría → filtra
+      getProductsByCategory(categoryId).then((res) => {
+        setItems(res);
+        setLoading(false);
+      });
+    } else {
+      //  Si no hay categoría → todo
+      getProducts().then((res) => {
+        setItems(res);
+        setLoading(false);
+      });
+    }
   }, [categoryId]);
 
   return (

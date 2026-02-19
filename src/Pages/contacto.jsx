@@ -1,34 +1,45 @@
 const Contacto = () => {
   return (
-    <section className="contacto-container">
-      <div className="contacto-card">
-        <h2>✨ Contáctanos</h2>
+    <section className="contacto">
+      <div className="contacto-wrapper">
+        <h1 className="contacto-title">Contáctanos</h1>
         <p className="contacto-subtitle">
           Nuestro equipo está listo para ayudarte
         </p>
 
-        <div className="contacto-info">
-          <div className="info-item">
-            <span>📱</span>
+        <div className="contacto-grid">
+          <div className="contacto-item">
+            <span className="icon">📞</span>
             <div>
-              <p className="label">Teléfono</p>
-              <p className="value">+57 320 641 4076</p>
+              <h3>Teléfono</h3>
+              <p>+57 320 641 4076</p>
             </div>
           </div>
 
-          <div className="info-item">
-            <span>📧</span>
+          <div className="contacto-item">
+            <span className="icon">📧</span>
             <div>
-              <p className="label">Email</p>
-              <p className="value">novashop@gmail.com</p>
+              <h3>Email</h3>
+              <p>novashop@gmail.com</p>
+            </div>
+          </div>
+
+          <div className="contacto-item">
+            <span className="icon">⏰</span>
+            <div>
+              <h3>Horario</h3>
+              <p>Lunes a Sábado</p>
             </div>
           </div>
         </div>
 
-        <div className="contacto-footer">
-          <p>⏰ Atención: Lunes a Sábado</p>
-          <p>🚀 Respuesta rápida garantizada</p>
-        </div>
+        <a
+          href="https://wa.me/573206414076"
+          target="_blank"
+          className="contacto-btn"
+        >
+          💬 Escríbenos por WhatsApp
+        </a>
       </div>
     </section>
   );

@@ -10,19 +10,42 @@ const NavBar = () => {
 
       <div className="collapse navbar-collapse show">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0 gap-3">
+          
           <li className="nav-item">
             <NavLink className="nav-link text-white fw-semibold" to="/">
               NovaShop
             </NavLink>
           </li>
 
-          <li className="nav-item">
-            <NavLink
-              className="nav-link text-white fw-semibold"
-              to="/category/productos"
+          {/* 🔽 Dropdown Productos */}
+          <li className="nav-item dropdown">
+            <span
+              className="nav-link text-white fw-semibold dropdown-toggle"
+              role="button"
+              data-bs-toggle="dropdown"
             >
               Productos
-            </NavLink>
+            </span>
+
+            <ul className="dropdown-menu">
+              <li>
+                <NavLink className="dropdown-item" to="/category/forros">
+                  Forros
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink className="dropdown-item" to="/category/celulares">
+                  Celulares
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink className="dropdown-item" to="/category/cargadores">
+                  Cargadores
+                </NavLink>
+              </li>
+            </ul>
           </li>
 
           <li className="nav-item">
@@ -33,6 +56,7 @@ const NavBar = () => {
               Contacto
             </NavLink>
           </li>
+
         </ul>
 
         <CartWidget />
