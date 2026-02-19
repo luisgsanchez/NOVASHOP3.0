@@ -39,7 +39,7 @@ const ItemDetailContainer = () => {
       {loading ? (
         <p className="text-secondary">Cargando detalle...</p>
       ) : detail ? (
-        <ItemDetail {...detail} />
+        <ItemDetail item={detail} />
       ) : (
         <p className="text-danger">Producto no encontrado</p>
       )}
