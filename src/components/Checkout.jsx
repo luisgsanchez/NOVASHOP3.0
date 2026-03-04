@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../service/firebase";
 import { useCart } from "../context/CartContext";
 
 const Checkout = () => {
   const { cart, getTotalPrice, clearCart } = useCart();
   const [orderId, setOrderId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -12,40 +15,67 @@ const Checkout = () => {
   });
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.email) {
-      alert("Completa nombre y email");
+    if (!form.name || !form.email || !form.phone) {
+      alert("Completa nombre, email y teléfono");
       return;
     }
 
-    const fakeOrderId = "ORD-" + Date.now().toString(36).toUpperCase();
-    setOrderId(fakeOrderId);
-    clearCart();
-  };
+    if (!cart || cart.length === 0) {
+      alert("Carrito vacío");
+      return;
+    }
 
-  if (cart.length === 0 && !orderId) {
-    return (
-      <section className="container py-4">
-        <h2 className="text-white">Checkout</h2>
-        <p className="text-secondary">No hay productos en el carrito.</p>
-      </section>
-    );
-  }
+    const order = {
+      buyer: {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+      },
+      items: cart.map((p) => ({
+        id: p.id,
+        name: p.name ?? p.title,
+        price: p.price,
+        quantity: p.quantity,
+        subtotal: p.price * p.quantity,
+      })),
+      total: getTotalPrice(),
+      date: serverTimestamp(),
+    };
+
+    try {
+      setLoading(true);
+      const docRef = await addDoc(collection(db, "orders"), order);
+      setOrderId(docRef.id);
+      clearCart();
+    } catch (err) {
+      console.log(err);
+      alert("Error creando la orden");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (orderId) {
     return (
       <section className="container py-4">
         <h2 className="text-white">¡Compra realizada!</h2>
-        <p className="text-secondary">Tu número de orden es:</p>
+        <p className="text-secondary">Tu ID de orden es:</p>
         <h4 className="text-warning">{orderId}</h4>
+      </section>
+    );
+  }
+
+  if (!cart || cart.length === 0) {
+    return (
+      <section className="container py-4">
+        <h2 className="text-white">Checkout</h2>
+        <p className="text-secondary">No hay productos en el carrito.</p>
       </section>
     );
   }
@@ -82,12 +112,10 @@ const Checkout = () => {
           onChange={handleChange}
         />
 
-        <h5 className="text-white">
-          Total: ${getTotalPrice()}
-        </h5>
+        <h5 className="text-white">Total: ${getTotalPrice()}</h5>
 
-        <button className="btn btn-warning">
-          Confirmar compra
+        <button className="btn btn-warning" disabled={loading}>
+          {loading ? "Procesando..." : "Confirmar compra"}
         </button>
       </form>
     </section>
