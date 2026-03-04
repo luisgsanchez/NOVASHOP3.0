@@ -3,8 +3,9 @@ import NavBar from "./components/NavBar";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemDetailContainer from "./components/ItemDetailContainer";
 import Home from "./components/Home";
-import Contacto from "./pages/Contacto";
+import Contacto from "./Pages/Contacto";
 import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
 
         {/* CONTACTO */}
         <Route path="/contacto" element={<Contacto />} />
+
+        {/* CHECKOUT */}
+        <Route path="/Checkout" element={<Checkout />} />
 
         {/* CARRITO */}
         <Route path="/cart" element={<Cart />} />
